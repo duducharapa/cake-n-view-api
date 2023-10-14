@@ -28,8 +28,7 @@ public class Cake {
     private Long id;
 
     @Column(nullable = false)
-    @Builder.Default
-    private String name = "";
+    private String name;
 
     @Column(columnDefinition = "TEXT")
     private String description;

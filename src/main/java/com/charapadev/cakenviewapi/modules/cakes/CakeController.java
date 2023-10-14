@@ -1,5 +1,7 @@
 package com.charapadev.cakenviewapi.modules.cakes;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,11 @@ public class CakeController {
     @GetMapping
     public @ResponseBody Page<Cake> list(Pageable pageable) {
         return cakeService.list(pageable);
+    }
+
+    @GetMapping("/trending")
+    public @ResponseBody List<Cake> listTrending() {
+        return cakeService.listTrending();
     }
 
     @PostMapping

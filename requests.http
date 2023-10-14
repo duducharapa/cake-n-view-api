@@ -1,0 +1,28 @@
+GET http://localhost:8080/cakes
+###
+GET http://localhost:8080/cakes/trending
+
+HTTP/1.1 200  - OK
+content-type: application/json
+transfer-encoding: chunked
+date: Sat, 14 Oct 2023 00:00:13 GMT
+connection: close
+###
+POST http://localhost:8080/cakes
+Content-Type: application/json
+
+{
+    "name": "Bolo de morango com creme",
+    "description": "A primeira coisa que chama a atenção é a sua aparência irresistível. A base do bolo é um pão-de-ló macio e úmido, adornado com camadas generosas de creme de baunilha fresco e suave. O contraste de cores entre o vermelho intenso dos morangos maduros e o branco cremoso do recheio é um espetáculo para os olhos.",
+    "imageUrl": "https://spicysouthernkitchen.com/wp-content/uploads/strawberry-twinkie-cake-6.jpg"
+}
+
+HTTP/1.1 201  - Created
+content-type: application/json
+transfer-encoding: chunked
+date: Sat, 14 Oct 2023 00:00:09 GMT
+connection: close
+###
+GET http://localhost:8080/cakes/1
+###
+DELETE http://localhost:8080/cakes/1

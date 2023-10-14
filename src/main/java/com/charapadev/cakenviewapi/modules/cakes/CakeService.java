@@ -1,5 +1,7 @@
 package com.charapadev.cakenviewapi.modules.cakes;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,10 @@ public class CakeService {
 
     public Page<Cake> list(Pageable pageable) {
         return cakeRepository.findAll(pageable);
+    }
+
+    public List<Cake> listTrending() {
+        return cakeRepository.findTrending();
     }
 
     public Cake create(CreateCakeDTO createDTO) {
