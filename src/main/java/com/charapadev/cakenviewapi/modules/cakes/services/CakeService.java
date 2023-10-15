@@ -1,4 +1,4 @@
-package com.charapadev.cakenviewapi.modules.cakes;
+package com.charapadev.cakenviewapi.modules.cakes.services;
 
 import java.util.List;
 
@@ -7,6 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.charapadev.cakenviewapi.exceptions.NotFoundException;
+import com.charapadev.cakenviewapi.modules.cakes.CreateCakeDTO;
+import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
+import com.charapadev.cakenviewapi.modules.cakes.repositories.CakeRepository;
 
 import lombok.AllArgsConstructor;
 

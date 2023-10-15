@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
+import com.charapadev.cakenviewapi.modules.cakes.entities.DailyCake;
+import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
+import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
+
 import lombok.AllArgsConstructor;
 
 @RequestMapping("/cakes")
@@ -23,13 +28,19 @@ import lombok.AllArgsConstructor;
 public class CakeController {
     
     private CakeService cakeService;
+    private DailyCakeService dailyCakeService;
 
     @GetMapping
     public @ResponseBody Page<Cake> list(Pageable pageable) {
         return cakeService.list(pageable);
     }
 
-    @GetMapping("/trending")
+    @GetMapping("/daily")
+    public @ResponseBody DailyCake getCakeOfDay() {
+        return dailyCakeService.getCurrent();
+    }
+
+    @GetMapping("/trendings")
     public @ResponseBody List<Cake> listTrending() {
         return cakeService.listTrending();
     }
