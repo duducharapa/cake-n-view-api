@@ -1,32 +1,32 @@
-# Listar bolos
+@host = http://localhost:8080
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZUBnbWFpbC5jb20ifQ._2prLpL28VbcOcOz0vKzXC9wBKuGQx-DOfkWICmenfU
 
-GET http://localhost:8080/cakes
-
-HTTP/1.1 200  - OK
-vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-x-content-type-options: nosniff
-x-xss-protection: 0
-cache-control: no-cache, no-store, max-age=0, must-revalidate
-pragma: no-cache
-expires: 0
-x-frame-options: DENY
-content-type: application/json
-transfer-encoding: chunked
-date: Mon, 16 Oct 2023 03:30:43 GMT
-connection: close
 ###
-# Listar os bolos em destaque 
 
-GET http://localhost:8080/cakes/trending
+# Lista todos os bolos
+
+GET {{host}}/cakes
+Authorization: {{token}}
+
 ###
-# Buscar o bolo escolhido do dia 
 
-GET http://localhost:8080/cakes/daily
+# Lista os bolos em destaque
+
+GET {{host}}/cakes/trending
+
 ###
-# Adicionar um novo bolo
 
-POST http://localhost:8080/cakes
+# Mostra o bolo do dia
+
+GET {{host}}/cakes/daily
+
+###
+
+# Adiciona um novo bolo
+
+POST {{host}}/cakes
 Content-Type: application/json
+Authorization: {{token}}
 
 {
     "name": "Bolo de morango com creme",
@@ -34,23 +34,30 @@ Content-Type: application/json
     "imageUrl": "https://spicysouthernkitchen.com/wp-content/uploads/strawberry-twinkie-cake-6.jpg"
 }
 ###
+
 # Buscar um bolo pelo identificador
 
-GET http://localhost:8080/cakes/1
-###
-# Remover um bolo
+GET {{host}}/cakes/1
 
-DELETE http://localhost:8080/cakes/1
 ###
-# Listar avaliações sobre um bolo
 
-GET http://localhost:8080/ratings?cakeId=1
+# Remove um bolo
+
+DELETE {{host}}/cakes/1
+
 ###
-# Criar avaliação sobre um bolo
 
-POST http://localhost:8080/ratings
+# Lista avaliações sobre um bolo
+
+GET {{host}}/ratings?cakeId=1
+
+###
+
+# Avalia um bolo
+
+POST {{host}}/ratings
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZUBnbWFpbC5jb20ifQ._2prLpL28VbcOcOz0vKzXC9wBKuGQx-DOfkWICmenfU
+Authorization: {{token}}
 
 {
     "cakeId": 1,
@@ -58,22 +65,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0ZUBnb
     "comment": "Eri bolo bom"
 }
 
-HTTP/1.1 500  - Internal Server Error
-vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-x-content-type-options: nosniff
-x-xss-protection: 0
-cache-control: no-cache, no-store, max-age=0, must-revalidate
-pragma: no-cache
-expires: 0
-x-frame-options: DENY
-content-type: application/json
-transfer-encoding: chunked
-date: Mon, 16 Oct 2023 18:42:11 GMT
-connection: close
 ###
-# Cadastrar um usuário
 
-POST http://localhost:8080/users
+# Cadastra um usuário
+
+POST {{host}}/users
 Content-Type: application/json
 
 {
@@ -81,34 +77,10 @@ Content-Type: application/json
     "password": "teste123"
 }
 
-HTTP/1.1 201  - Created
-vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-x-content-type-options: nosniff
-x-xss-protection: 0
-cache-control: no-cache, no-store, max-age=0, must-revalidate
-pragma: no-cache
-expires: 0
-x-frame-options: DENY
-content-type: application/json
-transfer-encoding: chunked
-date: Mon, 16 Oct 2023 18:41:54 GMT
-connection: close
 ###
-# Requisitar token de autenticação
 
-POST http://localhost:8080/login
+# Requisita token de autenticação
+
+POST {{host}}/login
 username: teste@gmail.com
 password: teste123
-
-HTTP/1.1 201  - Created
-vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-x-content-type-options: nosniff
-x-xss-protection: 0
-cache-control: no-cache, no-store, max-age=0, must-revalidate
-pragma: no-cache
-expires: 0
-x-frame-options: DENY
-content-type: application/json
-content-length: 127
-date: Mon, 16 Oct 2023 17:22:56 GMT
-connection: close
