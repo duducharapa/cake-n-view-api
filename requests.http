@@ -1,6 +1,19 @@
 # Listar bolos
 
 GET http://localhost:8080/cakes
+
+HTTP/1.1 200  - OK
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-xss-protection: 0
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: 0
+x-frame-options: DENY
+content-type: application/json
+transfer-encoding: chunked
+date: Mon, 16 Oct 2023 03:30:43 GMT
+connection: close
 ###
 # Listar os bolos em destaque 
 
@@ -33,6 +46,8 @@ DELETE http://localhost:8080/cakes/1
 
 GET http://localhost:8080/ratings?cakeId=1
 ###
+# Criar avaliação sobre um bolo
+
 POST http://localhost:8080/ratings
 Content-Type: application/json
 
@@ -41,3 +56,45 @@ Content-Type: application/json
     "number": 5,
     "comment": "Eri bolo bom"
 }
+###
+# Cadastrar um usuário
+
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "email": "teste@gmail.com",
+    "password": "teste123"
+}
+
+HTTP/1.1 201  - Created
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-xss-protection: 0
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: 0
+x-frame-options: DENY
+content-type: application/json
+transfer-encoding: chunked
+date: Mon, 16 Oct 2023 17:22:45 GMT
+connection: close
+###
+# Requisitar token de autenticação
+
+POST http://localhost:8080/login
+username: teste@gmail.com
+password: teste123
+
+HTTP/1.1 201  - Created
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-xss-protection: 0
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+expires: 0
+x-frame-options: DENY
+content-type: application/json
+content-length: 127
+date: Mon, 16 Oct 2023 17:22:56 GMT
+connection: close

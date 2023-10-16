@@ -1,3 +1,5 @@
+jwt:
+  secret: vdDq4hVKoodLKB6UtXnT6VuIvep3UyuxJS7qRj7jWCOpa2CunG7WyavMlg35zo8L
 spring:
   h2:
     console:
