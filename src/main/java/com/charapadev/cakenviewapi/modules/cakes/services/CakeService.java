@@ -1,13 +1,15 @@
 package com.charapadev.cakenviewapi.modules.cakes.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.charapadev.cakenviewapi.exceptions.NotFoundException;
-import com.charapadev.cakenviewapi.modules.cakes.CreateCakeDTO;
+import com.charapadev.cakenviewapi.modules.cakes.dtos.CreateCakeDTO;
+import com.charapadev.cakenviewapi.modules.cakes.dtos.UpdateCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.repositories.CakeRepository;
 
@@ -47,6 +49,14 @@ public class CakeService {
     public Cake find(Long cakeId) throws NotFoundException {
         String message = String.format("Cannot found an cake using the given ID: %s", cakeId);
         return find(cakeId, message);
+    }
+
+    public void update(Cake cake, UpdateCakeDTO updateDTO) {
+        Optional.ofNullable(updateDTO.rating()).ifPresent(rating -> {
+            cake.setAverageRating(rating);
+        });
+
+        cakeRepository.save(cake);
     }
 
     public void remove(Long cakeId) {

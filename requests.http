@@ -28,3 +28,16 @@ GET http://localhost:8080/cakes/1
 # Remover um bolo
 
 DELETE http://localhost:8080/cakes/1
+###
+# Listar avaliações sobre um bolo
+
+GET http://localhost:8080/ratings?cakeId=1
+###
+POST http://localhost:8080/ratings
+Content-Type: application/json
+
+{
+    "cakeId": 1,
+    "number": 5,
+    "comment": "Eri bolo bom"
+}
