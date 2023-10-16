@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.charapadev.cakenviewapi.exceptions.UserNotExistsException;
 import com.charapadev.cakenviewapi.modules.users.User;
 import com.charapadev.cakenviewapi.modules.users.UserRepository;
 
@@ -34,14 +35,14 @@ public class TokenService {
             .sign(alg);
     }
 
-    public User decode(String token) {
+    public User decode(String token) throws UserNotExistsException {
         Algorithm alg = generateAlgorithm();
 
         String email = JWT.require(alg).build()
             .verify(token).getSubject();
 
         return userRepository.findByEmail(email)
-            .orElseThrow();
+            .orElseThrow(() -> new UserNotExistsException("Cannot find an user vinculated to this JWT"));
     }
 
 }

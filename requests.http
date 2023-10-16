@@ -38,6 +38,7 @@ Authorization: {{token}}
 # Buscar um bolo pelo identificador
 
 GET {{host}}/cakes/1
+Authorization: {{token}}
 
 ###
 
