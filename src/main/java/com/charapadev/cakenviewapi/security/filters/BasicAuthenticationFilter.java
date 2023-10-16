@@ -3,9 +3,9 @@ package com.charapadev.cakenviewapi.security.filters;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.charapadev.cakenviewapi.modules.auth.SuccessLoginDTO;
@@ -18,7 +18,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Configuration
+@Component
 public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
