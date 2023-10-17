@@ -3,6 +3,8 @@ package com.charapadev.cakenviewapi.modules.users;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.charapadev.cakenviewapi.modules.users.dtos.CreateUserDTO;
+
 import lombok.AllArgsConstructor;
 
 @Service

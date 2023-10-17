@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.charapadev.cakenviewapi.modules.users.dtos.CreateUserDTO;
+import com.charapadev.cakenviewapi.modules.users.dtos.ShowUserDTO;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -17,11 +20,14 @@ import lombok.AllArgsConstructor;
 public class UserController {
 
     private UserService userService;
+    private UserMapper userMapper;
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public @ResponseBody User create(@RequestBody @Valid CreateUserDTO createDTO) {
-        return userService.create(createDTO);
+    public @ResponseBody ShowUserDTO create(@RequestBody @Valid CreateUserDTO createDTO) {
+        User newUser = userService.create(createDTO);
+
+        return userMapper.toShow(newUser);
     }
 
 }

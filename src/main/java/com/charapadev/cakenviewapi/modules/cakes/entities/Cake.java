@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +26,7 @@ import lombok.ToString;
 @Getter
 @Setter
 public class Cake implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,9 +37,9 @@ public class Cake implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column
+    @Embedded
     @Builder.Default
-    private Double averageRating = 0.0;
+    private CakeRatingData rating = new CakeRatingData(0.0, 0);
 
     @Column
     @Builder.Default
@@ -51,7 +52,7 @@ public class Cake implements Serializable {
         Cake cake = (Cake) o;
         return Objects.equals(getId(), cake.getId());
     }
- 
+
     @Override
     public int hashCode() {
         return Objects.hash(getId());

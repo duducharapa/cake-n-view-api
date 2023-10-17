@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class CakeService {
-    
+
     private CakeRepository cakeRepository;
 
     public Page<Cake> list(Pageable pageable) {
@@ -42,7 +42,7 @@ public class CakeService {
     public Cake find(Long cakeId, String errorMessage) throws NotFoundException {
         Cake cakeFound = cakeRepository.findById(cakeId)
             .orElseThrow(() -> new NotFoundException(errorMessage));
-        
+
         return cakeFound;
     }
 
@@ -53,7 +53,8 @@ public class CakeService {
 
     public void update(Cake cake, UpdateCakeDTO updateDTO) {
         Optional.ofNullable(updateDTO.rating()).ifPresent(rating -> {
-            cake.setAverageRating(rating);
+            cake.getRating().setAverage(rating);
+            cake.getRating().incrementRatings();
         });
 
         cakeRepository.save(cake);

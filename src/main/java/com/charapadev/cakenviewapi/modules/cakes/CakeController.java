@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.charapadev.cakenviewapi.modules.cakes.dtos.CreateCakeDTO;
+import com.charapadev.cakenviewapi.modules.cakes.dtos.ShowCakeDTO;
+import com.charapadev.cakenviewapi.modules.cakes.dtos.ShowDailyCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.entities.DailyCake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
@@ -31,31 +33,39 @@ public class CakeController {
 
     private CakeService cakeService;
     private DailyCakeService dailyCakeService;
+    private CakeMapper cakeMapper;
 
     @GetMapping
-    public @ResponseBody Page<Cake> list(Pageable pageable) {
-        return cakeService.list(pageable);
+    public @ResponseBody Page<ShowCakeDTO> list(Pageable pageable) {
+        return cakeService.list(pageable).map(cakeMapper::toShow);
     }
 
     @GetMapping("/daily")
-    public @ResponseBody DailyCake getCakeOfDay() {
-        return dailyCakeService.getCurrent();
+    public @ResponseBody ShowDailyCakeDTO getCakeOfDay() {
+        DailyCake dailyCake = dailyCakeService.getCurrent();
+
+        return cakeMapper.toShowDaily(dailyCake);
     }
 
     @GetMapping("/trendings")
-    public @ResponseBody List<Cake> listTrending() {
-        return cakeService.listTrending();
+    public @ResponseBody List<ShowCakeDTO> listTrending() {
+        return cakeService.listTrending().stream()
+            .map(cakeMapper::toShow).toList();
     }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public @ResponseBody Cake create(@RequestBody @Valid CreateCakeDTO createDTO) {
-        return cakeService.create(createDTO);
+    public @ResponseBody ShowCakeDTO create(@RequestBody @Valid CreateCakeDTO createDTO) {
+        Cake newCake = cakeService.create(createDTO);
+
+        return cakeMapper.toShow(newCake);
     }
 
     @GetMapping(value = "/{id}")
-    public @ResponseBody Cake find(@PathVariable("id") Long cakeId) {
-        return cakeService.find(cakeId);
+    public @ResponseBody ShowCakeDTO find(@PathVariable("id") Long cakeId) {
+        Cake cakeFound = cakeService.find(cakeId);
+
+        return cakeMapper.toShow(cakeFound);
     }
 
     @DeleteMapping("/{id}")
