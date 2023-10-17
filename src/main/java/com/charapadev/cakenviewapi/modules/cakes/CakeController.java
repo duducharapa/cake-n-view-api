@@ -21,13 +21,14 @@ import com.charapadev.cakenviewapi.modules.cakes.entities.DailyCake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
 import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RequestMapping("/cakes")
 @RestController
 @AllArgsConstructor
 public class CakeController {
-    
+
     private CakeService cakeService;
     private DailyCakeService dailyCakeService;
 
@@ -48,7 +49,7 @@ public class CakeController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public @ResponseBody Cake create(@RequestBody CreateCakeDTO createDTO) {
+    public @ResponseBody Cake create(@RequestBody @Valid CreateCakeDTO createDTO) {
         return cakeService.create(createDTO);
     }
 

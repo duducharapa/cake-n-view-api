@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RequestMapping("/users")
@@ -19,7 +20,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public @ResponseBody User create(@RequestBody CreateUserDTO createDTO) {
+    public @ResponseBody User create(@RequestBody @Valid CreateUserDTO createDTO) {
         return userService.create(createDTO);
     }
 

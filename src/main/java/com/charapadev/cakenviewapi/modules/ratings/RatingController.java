@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RequestMapping("/ratings")
 @RestController
 @AllArgsConstructor
 public class RatingController {
-    
+
     private RatingService ratingService;
     private CakeService cakeService;
 
@@ -34,7 +35,7 @@ public class RatingController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void create(@RequestBody RateCakeDTO rateDTO) {
+    public void create(@RequestBody @Valid RateCakeDTO rateDTO) {
         Cake cake = cakeService.find(rateDTO.cakeId());
 
         ratingService.add(cake, rateDTO);
