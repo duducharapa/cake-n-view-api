@@ -37,7 +37,7 @@ public class WebSecurityApp {
         http.csrf(csrf -> csrf.disable());
         http.cors(cors -> cors.configure(http));
         http.sessionManagement(session -> session.disable());
-        http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll());
+
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint));
 
         return http.build();

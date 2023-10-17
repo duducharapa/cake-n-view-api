@@ -42,7 +42,7 @@ public class TokenService {
             .verify(token).getSubject();
 
         return userRepository.findByEmail(email)
-            .orElseThrow(() -> new UserNotExistsException("Cannot find an user vinculated to this JWT"));
+            .orElseThrow(() -> new UserNotExistsException("Cannot find an user vinculated to the token provided"));
     }
 
 }

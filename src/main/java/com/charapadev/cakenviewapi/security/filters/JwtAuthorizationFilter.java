@@ -42,8 +42,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        boolean isLoginPath = path.equals("/users") && request.getMethod().equals("POST");
-        return isLoginPath || path.equals("/login");
+        boolean isRegisterPath = path.equals("/users") && request.getMethod().equals("POST");
+        boolean isCakeViewPath = (path.equals("/cakes/trendings") || path.equals("/cakes/daily")) &&
+            request.getMethod().equals("GET");
+        boolean isRatingsView = path.equals("/ratings") && request.getMethod().equals("GET");
+
+        return isRegisterPath || path.equals("/login") || isCakeViewPath || isRatingsView;
     }
 
 }

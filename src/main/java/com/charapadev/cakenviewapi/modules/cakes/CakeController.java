@@ -53,7 +53,7 @@ public class CakeController {
         return cakeService.create(createDTO);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public @ResponseBody Cake find(@PathVariable("id") Long cakeId) {
         return cakeService.find(cakeId);
     }

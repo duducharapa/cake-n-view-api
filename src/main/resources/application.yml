@@ -1,11 +1,6 @@
 jwt:
   secret: vdDq4hVKoodLKB6UtXnT6VuIvep3UyuxJS7qRj7jWCOpa2CunG7WyavMlg35zo8L
 spring:
-  h2:
-    console:
-      path: /h2-console
-      settings.trace: false
-      settings.web-allow-others: false
   datasource:
     url: jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
     username: sa

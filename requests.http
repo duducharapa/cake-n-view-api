@@ -12,7 +12,7 @@ Authorization: {{token}}
 
 # Lista os bolos em destaque
 
-GET {{host}}/cakes/trending
+GET {{host}}/cakes/trendings
 
 ###
 
