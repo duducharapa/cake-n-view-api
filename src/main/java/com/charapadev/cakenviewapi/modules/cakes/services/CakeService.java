@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.charapadev.cakenviewapi.exceptions.NotFoundException;
@@ -21,8 +23,8 @@ public class CakeService {
 
     private CakeRepository cakeRepository;
 
-    public Page<Cake> list(Pageable pageable) {
-        return cakeRepository.findAll(pageable);
+    public Page<Cake> list(Pageable pageable, String name) {
+        return cakeRepository.findAllByName(name, pageable);
     }
 
     public List<Cake> listTrending() {

@@ -3,7 +3,10 @@ package com.charapadev.cakenviewapi.modules.cakes;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +26,7 @@ import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.entities.DailyCake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
 import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
+import com.charapadev.utils.PageUtils;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -36,8 +41,17 @@ public class CakeController {
     private CakeMapper cakeMapper;
 
     @GetMapping
-    public @ResponseBody Page<ShowCakeDTO> list(Pageable pageable) {
-        return cakeService.list(pageable).map(cakeMapper::toShow);
+    public @ResponseBody Page<ShowCakeDTO> list(
+        @RequestParam(name = "name", required = false, defaultValue = "") String name,
+        @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+        @RequestParam(name = "bestRated", required = false, defaultValue = "true") Boolean bestRated
+    ) {
+        Direction direction = bestRated ? Direction.DESC : Direction.ASC;
+
+        PageRequest pageable = PageRequest.of(page, PageUtils.PER_PAGE, Sort.by(direction, "rating.average"));
+        Page<Cake> cakesFound = cakeService.list(pageable, name);
+
+        return cakesFound.map(cakeMapper::toShow);
     }
 
     @GetMapping("/daily")
