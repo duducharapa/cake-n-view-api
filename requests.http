@@ -5,8 +5,7 @@
 
 # Lista todos os bolos
 
-GET {{host}}/cakes
-Authorization: {{token}}
+GET {{host}}/cakes?page=1
 
 ###
 

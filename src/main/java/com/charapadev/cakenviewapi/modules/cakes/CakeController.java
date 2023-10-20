@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
@@ -48,7 +47,10 @@ public class CakeController {
     ) {
         Direction direction = bestRated ? Direction.DESC : Direction.ASC;
 
-        PageRequest pageable = PageRequest.of(page, PageUtils.PER_PAGE, Sort.by(direction, "rating.average"));
+        PageRequest pageable = PageRequest.of(
+            page, PageUtils.PER_PAGE,
+            Sort.by("id").and(Sort.by(direction, "rating.average"))
+        );
         Page<Cake> cakesFound = cakeService.list(pageable, name);
 
         return cakesFound.map(cakeMapper::toShow);
