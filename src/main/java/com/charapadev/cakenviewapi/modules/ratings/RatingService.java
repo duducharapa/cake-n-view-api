@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.charapadev.cakenviewapi.modules.cakes.dtos.UpdateCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
+import com.charapadev.cakenviewapi.modules.users.User;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class RatingService {
-    
+
     private RatingRepository ratingRepository;
     private CakeService cakeService;
 
@@ -26,9 +27,10 @@ public class RatingService {
     }
 
     @Transactional
-    public void add(Cake cake, RateCakeDTO rateDTO) {
+    public void add(Cake cake, User user, RateCakeDTO rateDTO) {
         Rating newRating = Rating.builder()
             .cake(cake)
+            .user(user)
             .comment(rateDTO.comment())
             .number(rateDTO.number())
             .build();

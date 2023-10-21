@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.charapadev.cakenviewapi.modules.users.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,14 +30,16 @@ import lombok.ToString;
 @Getter
 @Setter
 public class Rating implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Cake cake;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @Column(nullable = false)
     private Double number;
@@ -52,7 +54,7 @@ public class Rating implements Serializable {
         Rating rating = (Rating) o;
         return Objects.equals(getId(), rating.getId());
     }
- 
+
     @Override
     public int hashCode() {
         return Objects.hash(getId());

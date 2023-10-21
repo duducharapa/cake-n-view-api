@@ -10,6 +10,7 @@ public class UserMapper {
     public ShowUserDTO toShow(User user) {
         return new ShowUserDTO(
             user.getId(),
+            user.getName(),
             user.getEmail()
         );
     }

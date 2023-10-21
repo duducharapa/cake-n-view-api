@@ -8,6 +8,9 @@ public record CreateUserDTO(
     @Email(message = "The user's email must have the correctly format")
     String email,
 
+    @NotBlank(message = "The user must have a name")
+    String name,
+
     @NotBlank(message = "The user must provide a password")
     String password
 ) {}

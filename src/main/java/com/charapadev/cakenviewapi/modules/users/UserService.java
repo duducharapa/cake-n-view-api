@@ -19,6 +19,7 @@ public class UserService {
 
         User newUser = User.builder()
             .email(createDTO.email())
+            .name(createDTO.name())
             .password(encodedPass)
             .build();
 
