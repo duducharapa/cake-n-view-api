@@ -1,4 +1,4 @@
-package com.charapadev.cakenviewapi.modules.ratings;
+package com.charapadev.cakenviewapi.modules.ratings.dtos;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

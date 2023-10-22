@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.charapadev.cakenviewapi.modules.cakes.dtos.UpdateCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
+import com.charapadev.cakenviewapi.modules.ratings.dtos.RateCakeDTO;
 import com.charapadev.cakenviewapi.modules.users.User;
 
 import jakarta.transaction.Transactional;

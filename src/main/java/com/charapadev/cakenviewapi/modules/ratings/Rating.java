@@ -1,7 +1,10 @@
 package com.charapadev.cakenviewapi.modules.ratings;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Objects;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.users.User;
@@ -46,6 +49,9 @@ public class Rating implements Serializable {
 
     @Column(columnDefinition = "TEXT")
     private String comment;
+
+    @CreationTimestamp
+    private Timestamp createdAt;
 
     @Override
     public boolean equals(Object o) {
