@@ -30,6 +30,13 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
+    @ExceptionHandler(value = { UnprocessableEntityException.class })
+    protected ResponseEntity<RestError> handleExistanceErrpr(UnprocessableEntityException ex, WebRequest request) {
+        RestError error = new RestError(ex.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         List<FieldDetailError> errors = ex.getFieldErrors().stream().map(fieldError -> {
