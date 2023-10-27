@@ -1,8 +1,6 @@
 version: "2"
-
 services:
-  api:
-    container_name: cakenview-api
-    image: charapadev/cakenview-api
-    ports:
-      - 8080:8080
+    api:
+        image: charapadev/cakenview-api
+        ports:
+            - 8080:8080

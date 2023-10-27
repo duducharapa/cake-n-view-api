@@ -1,5 +1,7 @@
 package com.charapadev.cakenviewapi.security;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.charapadev.cakenviewapi.security.providers.EmailPassAuthProvider;
 
@@ -33,10 +38,22 @@ public class WebSecurityApp {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(List.of("http://localhost", "http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("username", "password", "content-type", "Authorization"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain chain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
-        http.cors(cors -> cors.configure(http));
-        http.sessionManagement(session -> session.disable());
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint));
 
