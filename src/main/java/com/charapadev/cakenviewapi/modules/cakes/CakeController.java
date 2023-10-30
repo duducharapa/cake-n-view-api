@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.charapadev.cakenviewapi.exceptions.RestError;
+import com.charapadev.cakenviewapi.modules.cakes.dtos.CakesPage;
 import com.charapadev.cakenviewapi.modules.cakes.dtos.CreateCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.dtos.ShowCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.dtos.ShowDailyCakeDTO;
@@ -27,10 +30,17 @@ import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
 import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
 import com.charapadev.utils.PageUtils;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
-@RequestMapping("/cakes")
+@Tag(name = "Bolos", description = "Bolos e tortas disponíveis para descoberta e avaliação para os usuários")
+@RequestMapping(value = "/cakes", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
 @RestController
 @AllArgsConstructor
 public class CakeController {
@@ -39,6 +49,13 @@ public class CakeController {
     private DailyCakeService dailyCakeService;
     private CakeMapper cakeMapper;
 
+    @Operation(summary = "Lista bolos e tortas")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", description = "Página contendo bolos cadastrados",
+            content = @Content(schema = @Schema(implementation = CakesPage.class))
+        )
+    })
     @GetMapping
     public @ResponseBody Page<ShowCakeDTO> list(
         @RequestParam(name = "name", required = false, defaultValue = "") String name,
@@ -56,6 +73,13 @@ public class CakeController {
         return cakesFound.map(cakeMapper::toShow);
     }
 
+    @Operation(summary = "Busca o bolo sorteado do dia")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", description = "Bolo do dia encontrado",
+            content = @Content(schema = @Schema(implementation = ShowDailyCakeDTO.class))
+        )
+    })
     @GetMapping("/daily")
     public @ResponseBody ShowDailyCakeDTO getCakeOfDay() {
         DailyCake dailyCake = dailyCakeService.getCurrent();
@@ -63,12 +87,29 @@ public class CakeController {
         return cakeMapper.toShowDaily(dailyCake);
     }
 
+    @Operation(summary = "Lista os bolos em destaque")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", description = "Bolos em destaque encontrados"
+        )
+    })
     @GetMapping("/trendings")
     public @ResponseBody List<ShowCakeDTO> listTrending() {
         return cakeService.listTrending().stream()
             .map(cakeMapper::toShow).toList();
     }
 
+    @Operation(summary = "Cadastra um bolo")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "201", description = "Bolo cadastrado com sucesso",
+            content = @Content(schema = @Schema(implementation = ShowCakeDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "400", description = "Erro na validação do corpo da requisição",
+            content = @Content(schema = @Schema(implementation = RestError.class))
+        )
+    })
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody ShowCakeDTO create(@RequestBody @Valid CreateCakeDTO createDTO) {
@@ -77,6 +118,17 @@ public class CakeController {
         return cakeMapper.toShow(newCake);
     }
 
+    @Operation(summary = "Busca um bolo")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", description = "Bolo encontrado",
+            content = @Content(schema = @Schema(implementation = ShowCakeDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "404", description = "Bolo não encontrado pelo identificador especificado",
+            content = @Content(schema = @Schema(implementation = RestError.class))
+        )
+    })
     @GetMapping(value = "/{id}")
     public @ResponseBody ShowCakeDTO find(@PathVariable("id") Long cakeId) {
         Cake cakeFound = cakeService.find(cakeId);
@@ -84,6 +136,14 @@ public class CakeController {
         return cakeMapper.toShow(cakeFound);
     }
 
+    @Operation(summary = "Exclui um bolo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Bolo removido som sucesso"),
+        @ApiResponse(
+            responseCode = "404", description = "Bolo não encontrado pelo identificador especificado",
+            content = @Content(schema = @Schema(implementation = RestError.class))
+        )
+    })
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void remove(@PathVariable("id") Long cakeId) {

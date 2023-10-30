@@ -42,11 +42,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
+        boolean isLoginPath = path.equals("/login") && request.getMethod().equals("POST");
         boolean isRegisterPath = path.equals("/users") && request.getMethod().equals("POST");
         boolean isCakeViewPath = path.contains("/cakes") && request.getMethod().equals("GET");
         boolean isRatingsView = path.equals("/ratings") && request.getMethod().equals("GET");
 
-        return isRegisterPath || path.equals("/login") || isCakeViewPath || isRatingsView;
+        boolean isApiDoc = path.startsWith("/v3/api-docs") && request.getMethod().equals("GET");
+        boolean isSwagger = path.startsWith("/swagger-ui") && request.getMethod().equals("GET");
+
+        return isRegisterPath || isLoginPath || isCakeViewPath || isRatingsView || isApiDoc || isSwagger;
     }
 
 }

@@ -24,7 +24,6 @@ public class CakeMapper {
         ShowCakeDTO cake = toShow(daily.getCake());
 
         return new ShowDailyCakeDTO(
-            daily.getId(),
             cake,
             daily.getExpiresAt()
         );
