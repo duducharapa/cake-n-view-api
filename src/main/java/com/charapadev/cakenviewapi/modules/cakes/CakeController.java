@@ -42,7 +42,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @Tag(name = "Bolos", description = "Bolos e tortas disponíveis para descoberta e avaliação para os usuários")
-@RequestMapping(value = "/cakes", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+@RequestMapping(value = "/cakes")
 @RestController
 @AllArgsConstructor
 public class CakeController {
@@ -59,7 +59,7 @@ public class CakeController {
             content = @Content(schema = @Schema(implementation = CakesPage.class))
         )
     })
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Page<ShowCakeDTO> list(
         @Parameter(description = "Nome do bolo") @RequestParam(name = "name", required = false, defaultValue = "") String name,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
@@ -83,7 +83,7 @@ public class CakeController {
             content = @Content(schema = @Schema(implementation = ShowDailyCakeDTO.class))
         )
     })
-    @GetMapping("/daily")
+    @GetMapping(value = "/daily", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ShowDailyCakeDTO getCakeOfDay() {
         DailyCake dailyCake = dailyCakeService.getCurrent();
 
@@ -97,7 +97,7 @@ public class CakeController {
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = ShowCakeDTO.class), maxItems = 3))
         )
     })
-    @GetMapping("/trendings")
+    @GetMapping(value = "/trendings", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<ShowCakeDTO> listTrending() {
         return cakeService.listTrending().stream()
             .map(cakeMapper::toShow).toList();
@@ -114,7 +114,7 @@ public class CakeController {
             content = @Content(schema = @Schema(implementation = RestError.class))
         )
     })
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody ShowCakeDTO create(@RequestBody @Valid CreateCakeDTO createDTO) {
         Cake newCake = cakeService.create(createDTO);
@@ -134,7 +134,7 @@ public class CakeController {
             content = @Content(schema = @Schema(implementation = RestError.class))
         )
     })
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ShowCakeDTO find(@PathVariable("id") Long cakeId) {
         Cake cakeFound = cakeService.find(cakeId);
 
@@ -150,7 +150,7 @@ public class CakeController {
             content = @Content(schema = @Schema(implementation = RestError.class))
         )
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void remove(@PathVariable("id") Long cakeId) {
         cakeService.remove(cakeId);

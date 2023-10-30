@@ -38,7 +38,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @Tag(name = "Avaliações", description = "Notas e comentários que usuários postam em relação à bolos")
-@RequestMapping(value = "/ratings", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+@RequestMapping("/ratings")
 @RestController
 @AllArgsConstructor
 public class RatingController {
@@ -61,7 +61,7 @@ public class RatingController {
             content = @Content(schema = @Schema(implementation = RestError.class))
         )
     })
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Page<ShowRatingDTO> list(
         @RequestParam("cakeId") Long cakeId,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
@@ -87,7 +87,7 @@ public class RatingController {
             content = @Content(schema = @Schema(implementation = RestError.class))
         )
     })
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public void create(@RequestBody @Valid RateCakeDTO rateDTO, Authentication auth) {
         Cake cake = cakeService.find(rateDTO.cakeId());

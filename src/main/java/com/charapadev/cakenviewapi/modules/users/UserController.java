@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @Tag(name = "Usuários", description = "Representa os consumidores da aplicação")
-@RequestMapping(value = "/users", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+@RequestMapping("/users")
 @RestController
 @AllArgsConstructor
 public class UserController {
@@ -37,7 +37,7 @@ public class UserController {
             content = @Content(schema = @Schema(implementation = RestError.class))
         )
     })
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody void create(@RequestBody @Valid CreateUserDTO createDTO) {
         userService.create(createDTO);
