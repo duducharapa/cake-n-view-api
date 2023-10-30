@@ -1,4 +1,4 @@
-package com.charapadev.utils;
+package com.charapadev.cakenviewapi.utils;
 
 public class PageUtils {
 

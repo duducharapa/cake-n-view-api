@@ -25,7 +25,7 @@ import com.charapadev.cakenviewapi.modules.ratings.dtos.RateCakeDTO;
 import com.charapadev.cakenviewapi.modules.ratings.dtos.RatingsPage;
 import com.charapadev.cakenviewapi.modules.ratings.dtos.ShowRatingDTO;
 import com.charapadev.cakenviewapi.modules.users.User;
-import com.charapadev.utils.PageUtils;
+import com.charapadev.cakenviewapi.utils.PageUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

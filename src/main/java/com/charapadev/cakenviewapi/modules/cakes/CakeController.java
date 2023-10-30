@@ -28,7 +28,7 @@ import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.entities.DailyCake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
 import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
-import com.charapadev.utils.PageUtils;
+import com.charapadev.cakenviewapi.utils.PageUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
