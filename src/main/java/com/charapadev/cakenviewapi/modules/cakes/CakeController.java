@@ -31,6 +31,8 @@ import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
 import com.charapadev.utils.PageUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,6 +52,7 @@ public class CakeController {
     private CakeMapper cakeMapper;
 
     @Operation(summary = "Lista bolos e tortas")
+    @Parameter(name = "bestRated", description = "Lista os bolos pelos melhores avaliados de forma decrescente")
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", description = "Página contendo bolos cadastrados",
@@ -58,7 +61,7 @@ public class CakeController {
     })
     @GetMapping
     public @ResponseBody Page<ShowCakeDTO> list(
-        @RequestParam(name = "name", required = false, defaultValue = "") String name,
+        @Parameter(description = "Nome do bolo") @RequestParam(name = "name", required = false, defaultValue = "") String name,
         @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
         @RequestParam(name = "bestRated", required = false, defaultValue = "true") Boolean bestRated
     ) {
@@ -90,7 +93,8 @@ public class CakeController {
     @Operation(summary = "Lista os bolos em destaque")
     @ApiResponses(value = {
         @ApiResponse(
-            responseCode = "200", description = "Bolos em destaque encontrados"
+            responseCode = "200", description = "Bolos em destaque encontrados",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = ShowCakeDTO.class), maxItems = 3))
         )
     })
     @GetMapping("/trendings")
@@ -119,6 +123,7 @@ public class CakeController {
     }
 
     @Operation(summary = "Busca um bolo")
+    @Parameter(name = "id", description = "Identificador do bolo")
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", description = "Bolo encontrado",
@@ -137,6 +142,7 @@ public class CakeController {
     }
 
     @Operation(summary = "Exclui um bolo")
+    @Parameter(name = "id", description = "Identificador do bolo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Bolo removido som sucesso"),
         @ApiResponse(

@@ -28,6 +28,7 @@ import com.charapadev.cakenviewapi.modules.users.User;
 import com.charapadev.utils.PageUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,6 +49,8 @@ public class RatingController {
     private RatingMapper ratingMapper;
 
     @Operation(summary = "Listar avaliações sobre um bolo")
+    @Parameter(name = "cakeId", description = "Identificador do bolo", example = "5")
+    @Parameter(name = "bestRated", description = "Lista as avaliações pelas maiores notas de forma decrescente")
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200", description = "Página contendo as avaliações do bolo",
