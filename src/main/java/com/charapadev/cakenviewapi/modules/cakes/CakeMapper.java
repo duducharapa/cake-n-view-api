@@ -1,5 +1,8 @@
 package com.charapadev.cakenviewapi.modules.cakes;
 
+import java.time.LocalDateTime;
+import java.util.TimeZone;
+
 import org.springframework.stereotype.Component;
 
 import com.charapadev.cakenviewapi.modules.cakes.dtos.ShowCakeDTO;
@@ -23,9 +26,15 @@ public class CakeMapper {
     public ShowDailyCakeDTO toShowDaily(DailyCake daily) {
         ShowCakeDTO cake = toShow(daily.getCake());
 
+        // Conversion on Timestamp from database do LocalDateTime
+        String expiresAt = LocalDateTime.ofInstant(
+            daily.getExpiresAt().toInstant(),
+            TimeZone.getDefault().toZoneId()
+        ).toString();
+
         return new ShowDailyCakeDTO(
             cake,
-            daily.getExpiresAt()
+            expiresAt
         );
     }
 
