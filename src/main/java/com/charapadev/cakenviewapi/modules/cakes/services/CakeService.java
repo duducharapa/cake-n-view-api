@@ -1,6 +1,5 @@
 package com.charapadev.cakenviewapi.modules.cakes.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -20,13 +19,10 @@ import lombok.AllArgsConstructor;
 public class CakeService {
 
     private CakeRepository cakeRepository;
+    private CakeViewService cakeViewService;
 
     public Page<Cake> list(Pageable pageable, String name) {
         return cakeRepository.findAllByName(name, pageable);
-    }
-
-    public List<Cake> listTrending() {
-        return cakeRepository.findTrending();
     }
 
     public Cake create(CreateCakeDTO createDTO) {
@@ -36,7 +32,10 @@ public class CakeService {
             .imageUrl(createDTO.imageUrl())
             .build();
 
-        return cakeRepository.save(newCake);
+        newCake = cakeRepository.save(newCake);
+        cakeViewService.generate(newCake);
+
+        return newCake;
     }
 
     public Cake find(Long cakeId, String errorMessage) throws NotFoundException {

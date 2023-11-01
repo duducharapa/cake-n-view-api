@@ -27,6 +27,7 @@ import com.charapadev.cakenviewapi.modules.cakes.dtos.ShowDailyCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.entities.DailyCake;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
+import com.charapadev.cakenviewapi.modules.cakes.services.CakeViewService;
 import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
 import com.charapadev.cakenviewapi.utils.PageUtils;
 
@@ -49,6 +50,7 @@ public class CakeController {
 
     private CakeService cakeService;
     private DailyCakeService dailyCakeService;
+    private CakeViewService cakeViewService;
     private CakeMapper cakeMapper;
 
     @Operation(summary = "Lista bolos e tortas")
@@ -99,7 +101,7 @@ public class CakeController {
     })
     @GetMapping(value = "/trendings", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<ShowCakeDTO> listTrending() {
-        return cakeService.listTrending().stream()
+        return cakeViewService.listTrendingCakes().stream()
             .map(cakeMapper::toShow).toList();
     }
 
@@ -137,6 +139,7 @@ public class CakeController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ShowCakeDTO find(@PathVariable("id") Long cakeId) {
         Cake cakeFound = cakeService.find(cakeId);
+        cakeViewService.incrementView(cakeFound);
 
         return cakeMapper.toShow(cakeFound);
     }

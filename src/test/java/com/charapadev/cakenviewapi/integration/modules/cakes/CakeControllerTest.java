@@ -2,11 +2,9 @@ package com.charapadev.cakenviewapi.integration.modules.cakes;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -15,6 +13,7 @@ import com.charapadev.cakenviewapi.modules.cakes.CakeMapper;
 import com.charapadev.cakenviewapi.modules.cakes.dtos.CreateCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.repositories.CakeRepository;
+import com.charapadev.cakenviewapi.modules.cakes.repositories.CakeViewRepository;
 import com.charapadev.cakenviewapi.modules.cakes.services.CakeService;
 import com.charapadev.cakenviewapi.modules.cakes.services.DailyCakeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.NoSuchElementException;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CakeControllerTest {
 
@@ -43,6 +41,9 @@ public class CakeControllerTest {
 
     @Autowired
     private DailyCakeService dailyCakeService;
+
+    @Autowired
+    private CakeViewRepository cakeViewRepository;
 
     @Autowired
     private CakeMapper cakeMapper;
@@ -84,7 +85,7 @@ public class CakeControllerTest {
     @Test
     public void findTrendingCakes() throws Exception {
         // Quantity of trending cakes currently found
-        int trendingCakesSize = cakeRepository.findTrending().size();
+        int trendingCakesSize = cakeViewRepository.findTrendingCakes().size();
 
         // Perform GET /cakes/trending endpoint
         mvc.perform(get("/cakes/trendings"))

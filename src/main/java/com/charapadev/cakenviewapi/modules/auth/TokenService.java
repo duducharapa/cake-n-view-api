@@ -1,6 +1,5 @@
 package com.charapadev.cakenviewapi.modules.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class TokenService {
 
     private UserRepository userRepository;
 
-    @Autowired
     public TokenService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
