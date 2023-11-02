@@ -18,6 +18,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Filter used on login endpoint logic.
+ *
+ * It receives the username and password given on request headers and authenticates it on AuthenticationManager.
+ * If everything is ok, the response will have an JWT token for subsequent identifications.
+ */
+
 @Component
 public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
@@ -38,6 +45,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
         String token = tokenService.generate(email);
         SuccessLoginDTO loginDTO = new SuccessLoginDTO(token);
 
+        // Mounting response for authenticated user
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(201);
         new ObjectMapper().writeValue(response.getOutputStream(), loginDTO);

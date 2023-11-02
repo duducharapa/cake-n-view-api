@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import com.charapadev.cakenviewapi.modules.users.User;
 import com.charapadev.cakenviewapi.modules.users.UserRepository;
 
+/**
+ * Implementation of UserDetailsService using the {@link UserRepository} to retrieve users.
+ */
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 

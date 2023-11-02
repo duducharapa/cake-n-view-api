@@ -12,8 +12,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.charapadev.cakenviewapi.security.authentications.EmailPassAuthentication;
+import com.charapadev.cakenviewapi.security.filters.BasicAuthenticationFilter;
 import com.charapadev.cakenviewapi.security.userdetails.CustomUserDetails;
 import com.charapadev.cakenviewapi.security.userdetails.UserDetailsServiceImpl;
+
+/**
+ * Provider to validate EmailPassAuthentication added on {@link BasicAuthenticationFilter}.
+ * If the email is registered and password matches, proceed with authentication.
+ */
 
 @Component
 public class EmailPassAuthProvider implements AuthenticationProvider {

@@ -18,6 +18,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.charapadev.cakenviewapi.security.providers.EmailPassAuthProvider;
 
+/**
+ *
+ */
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityApp {
@@ -30,7 +34,7 @@ public class WebSecurityApp {
     private EmailPassAuthProvider emailPassAuthProvider;
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
         builder.authenticationProvider(emailPassAuthProvider);
 
@@ -38,7 +42,7 @@ public class WebSecurityApp {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of("http://localhost", "http://localhost:5173"));
@@ -51,10 +55,9 @@ public class WebSecurityApp {
     }
 
     @Bean
-    public SecurityFilterChain chain(HttpSecurity http) throws Exception {
+    SecurityFilterChain chain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint));
 
         return http.build();

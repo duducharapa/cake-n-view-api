@@ -9,6 +9,11 @@ import com.charapadev.cakenviewapi.modules.users.User;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Custom implementation of default UserDetails, wrapping the {@link User} entity from application to retrieve
+ * details like password and roles.
+ */
+
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
