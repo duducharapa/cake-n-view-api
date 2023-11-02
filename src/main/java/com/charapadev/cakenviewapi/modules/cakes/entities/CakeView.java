@@ -18,6 +18,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Represents the visualizations of cakes.
+ *
+ * It can be used to classify them are trending or not and get insights about what the users like more.
+ */
+
 @Entity
 @Table(name = "views")
 @Builder
@@ -28,17 +34,29 @@ import lombok.ToString;
 @Setter
 public class CakeView implements Serializable {
 
+    /**
+     * Visualization internal identifier.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
+    /**
+     * The quantity of times the cake was visited.
+     */
     @Column
     @Builder.Default
     private int views = 0;
 
+    /**
+     * The cake itself that is being visited.
+     */
     @OneToOne(fetch = FetchType.LAZY)
     private Cake cake;
 
+    /**
+     * Adds a new visualization on views counter.
+     */
     public void incrementView() {
         this.views++;
     }

@@ -24,6 +24,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Represents the values given by users for cakes.
+ *
+ * It is like the directly interaction from users with the cakes, sharing some aspects about your expirence with it.
+ */
+
 @Entity
 @Table(name = "ratings")
 @Builder
@@ -34,22 +40,46 @@ import lombok.ToString;
 @Setter
 public class Rating implements Serializable {
 
+    /**
+     * Rating internal identifier.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * The cake is being rated.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     private Cake cake;
 
+    /**
+     * The user that rating.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    // TODO: Considers the values of ratings for daily cake candidates.
+    /**
+     * The value, from 0 to 5, given from user to cake.
+     *
+     * It can be used as a satisfaction degree to consider on filtering.
+     */
     @Column(nullable = false)
     private Double number;
 
+    // TODO: Filter the comments
+    /**
+     * An brief description about the reason for this value.
+     *
+     * It is optional, but some users want to expose some points of view.
+     */
     @Column(columnDefinition = "TEXT")
     private String comment;
 
+    /**
+     * Date when the user posted the rating for public view.
+     */
     @CreationTimestamp
     private Timestamp createdAt;
 

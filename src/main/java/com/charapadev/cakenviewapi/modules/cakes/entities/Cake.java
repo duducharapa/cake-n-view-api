@@ -17,6 +17,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Represents the cakes and also the pies available to be rated on application.
+ */
+
 @Entity
 @Table(name = "cakes")
 @Builder
@@ -27,20 +31,43 @@ import lombok.ToString;
 @Setter
 public class Cake implements Serializable {
 
+    /**
+     * Internal cake identifier.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Visible cake's name.
+     *
+     * It is only used as an preview for users about the flavors or anything else related.
+     */
     @Column(nullable = false)
     private String name;
 
+    /**
+     * An brief description about the cake.
+     *
+     * It can be used to inform users about some cake details like flavors, consistency and much more.
+     */
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    /**
+     * General data about the ratings related to this cake.
+     *
+     * It is used for filterings and classify cakes based on it.
+     */
     @Embedded
     @Builder.Default
     private CakeRatingData rating = new CakeRatingData(0.0, 0);
 
+    /**
+     * The principal image vinculed to cake.
+     *
+     * It can be an external URL from network or an link provided from an internal file implementation.
+     */
     @Column
     @Builder.Default
     private String imageUrl = "";

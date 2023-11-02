@@ -9,6 +9,13 @@ import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 
 public interface CakeRepository extends JpaRepository<Cake, Long> {
 
+    /**
+     * Selects all cakes by name ignoring the letter case.
+     *
+     * @param name The search name desired.
+     * @param pageable The pagination object.
+     * @return A page containing the cakes found.
+     */
     @Query("SELECT c FROM Cake c WHERE lower(c.name) LIKE lower(concat('%', :name, '%'))")
     Page<Cake> findAllByName(String name, Pageable pageable);
 
