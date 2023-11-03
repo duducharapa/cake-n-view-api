@@ -12,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.charapadev.cakenviewapi.modules.auth.TokenService;
 import com.charapadev.cakenviewapi.modules.users.User;
 import com.charapadev.cakenviewapi.security.authentications.EmailPassAuthentication;
+import com.charapadev.cakenviewapi.utils.Paths;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,18 +41,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
-
-        // TODO: Create PathPattern for these methods
-        boolean isLoginPath = path.equals("/login") && request.getMethod().equals("POST");
-        boolean isRegisterPath = path.equals("/users") && request.getMethod().equals("POST");
-        boolean isCakeViewPath = path.contains("/cakes") && request.getMethod().equals("GET");
-        boolean isRatingsView = path.equals("/ratings") && request.getMethod().equals("GET");
-
-        boolean isApiDoc = path.startsWith("/v3/api-docs") && request.getMethod().equals("GET");
-        boolean isSwagger = path.startsWith("/swagger-ui") && request.getMethod().equals("GET");
-
-        return isRegisterPath || isLoginPath || isCakeViewPath || isRatingsView || isApiDoc || isSwagger;
+        return Paths.isPublicRoute(request);
     }
 
 }
