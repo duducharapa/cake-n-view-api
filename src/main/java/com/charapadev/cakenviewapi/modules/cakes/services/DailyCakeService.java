@@ -18,9 +18,11 @@ import com.charapadev.cakenviewapi.modules.cakes.repositories.DailyCakeRepositor
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j(topic = "Daily cake service")
 public class DailyCakeService {
 
     private DailyCakeRepository dailyCakeRepository;
@@ -48,12 +50,22 @@ public class DailyCakeService {
     public void refreshDailyCake() {
         Optional<DailyCake> currentTrending = dailyCakeRepository.findDailyCake();
 
-        currentTrending.ifPresent((dailyCake) -> {
-            dailyCake.setCurrent(false);
-            dailyCakeRepository.save(dailyCake);
-        });
+        currentTrending.ifPresentOrElse(
+            // If present
+            (dailyCake) -> {
+                // Checks if the current cake is already expired
+                // If is, invalidates
+                Timestamp now = Timestamp.from(Instant.now());
+                boolean isExpired = dailyCake.getExpiresAt().after(now);
 
-        raffleNewCake();
+                if (!isExpired) return;
+
+                dailyCake.setCurrent(false);
+                dailyCakeRepository.save(dailyCake);
+            },
+            // If empty
+            () -> raffleNewCake()
+        );
     }
 
     /**
@@ -66,18 +78,18 @@ public class DailyCakeService {
         long cakeCount = cakeRepository.count();
         long previousDailyCakes = dailyCakeRepository.count();
 
-        // FIXME: Add exception throwing here
-        // If has no more cakes to raffle
-        if (cakeCount <= previousDailyCakes) {
-            //throw new RuntimeException();
-            return;
+        try {
+            // If has no more cakes to raffle
+            if (cakeCount <= previousDailyCakes) throw new RuntimeException();
+
+            List<Cake> possibleCakes = dailyCakeRepository.findOptionsForDailyCake();
+            int randomNumber = new Random().nextInt(possibleCakes.size());
+            Cake choosenCake = possibleCakes.get(randomNumber);
+
+            create(choosenCake);
+        } catch (RuntimeException ex) {
+            log.error("Cannot raffle a new cake, no remaining candidates.");
         }
-
-        List<Cake> possibleCakes = dailyCakeRepository.findOptionsForDailyCake();
-        int randomNumber = new Random().nextInt(possibleCakes.size());
-        Cake choosenCake = possibleCakes.get(randomNumber);
-
-        create(choosenCake);
     }
 
     /**
