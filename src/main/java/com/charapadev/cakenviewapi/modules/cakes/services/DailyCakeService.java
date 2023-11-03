@@ -16,6 +16,7 @@ import com.charapadev.cakenviewapi.modules.cakes.entities.DailyCake;
 import com.charapadev.cakenviewapi.modules.cakes.repositories.CakeRepository;
 import com.charapadev.cakenviewapi.modules.cakes.repositories.DailyCakeRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -65,6 +66,7 @@ public class DailyCakeService {
         long cakeCount = cakeRepository.count();
         long previousDailyCakes = dailyCakeRepository.count();
 
+        // FIXME: Add exception throwing here
         // If has no more cakes to raffle
         if (cakeCount <= previousDailyCakes) {
             //throw new RuntimeException();
@@ -84,7 +86,9 @@ public class DailyCakeService {
      * @param cake The cake chosen as daily.
      */
     private void create(Cake cake) {
-        Instant tomorrow = Instant.now().plus(1, ChronoUnit.DAYS);
+        int EXPIRE_DAYS = 1;
+
+        Instant tomorrow = Instant.now().plus(EXPIRE_DAYS, ChronoUnit.DAYS);
         Timestamp nextDay = Timestamp.from(tomorrow);
 
         DailyCake daily = DailyCake.builder()
@@ -95,6 +99,18 @@ public class DailyCakeService {
         dailyCakeRepository.save(daily);
     }
 
+    /**
+     * Deletes an daily cake instance (if exists) based on a related cake.
+     *
+     * @param cakeId The cake identifier.
+     */
+    @Transactional
+    public void removeFromCake(Long cakeId) {
+        Optional<DailyCake> dailyCake = dailyCakeRepository.findByCake(cakeId);
 
+        if (dailyCake.isEmpty()) return;
+
+        dailyCakeRepository.delete(dailyCake.get());
+    }
 
 }

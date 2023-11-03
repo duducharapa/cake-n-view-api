@@ -11,7 +11,9 @@ import com.charapadev.cakenviewapi.modules.cakes.dtos.CreateCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.dtos.UpdateCakeDTO;
 import com.charapadev.cakenviewapi.modules.cakes.entities.Cake;
 import com.charapadev.cakenviewapi.modules.cakes.repositories.CakeRepository;
+import com.charapadev.cakenviewapi.modules.cakes.repositories.CakeViewRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 /**
@@ -23,7 +25,9 @@ import lombok.AllArgsConstructor;
 public class CakeService {
 
     private CakeRepository cakeRepository;
+    private CakeViewRepository cakeViewRepository;
     private CakeViewService cakeViewService;
+    private DailyCakeService dailyCakeService;
 
     /**
      * Lists all cakes, filtered by name and pagination options.
@@ -37,10 +41,10 @@ public class CakeService {
     }
 
     /**
+     * Register a new cake on application and generates the dependent entities.
      *
-     *
-     * @param createDTO
-     * @return
+     * @param createDTO The cake data to be registered.
+     * @return The created cake.
      */
     public Cake create(CreateCakeDTO createDTO) {
         Cake newCake = Cake.builder()
@@ -100,16 +104,23 @@ public class CakeService {
     }
 
     /**
-     * Removes an cake
+     * Removes an cake from application.
      *
-     * If the cake is currently trending or was chosen as daily cake, the application will fail to delete it.
-     * It'll be fixed on incoming updates.
+     * Before clear the cake data itself, the application remove the views and daily instance to perform some triggered actions like
+     * raffle a new DailyCake.
      *
      * @param cakeId The cake identifier.
      */
-    // FIXME: Fix removable daily cakes
+    @Transactional
     public void remove(Long cakeId) {
         find(cakeId);
+
+        // Remove CakeView related instance
+        cakeViewService.findByCake(cakeId)
+            .ifPresent(view -> cakeViewRepository.delete(view));
+
+        // Remove DailyCake related instance
+        dailyCakeService.removeFromCake(cakeId);
 
         cakeRepository.deleteById(cakeId);
     }

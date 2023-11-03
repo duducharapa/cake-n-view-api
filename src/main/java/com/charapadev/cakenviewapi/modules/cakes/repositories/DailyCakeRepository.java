@@ -33,4 +33,13 @@ public interface DailyCakeRepository extends JpaRepository<DailyCake, Long> {
     )
     List<Cake> findOptionsForDailyCake();
 
+    /**
+     * Searches an DailyCake registry by a given cake.
+     *
+     * @param cakeId The cake identifier.
+     * @return The daily cake found.
+     */
+    @Query("SELECT d FROM DailyCake d JOIN d.cake c WHERE c.id = :cakeId")
+    Optional<DailyCake> findByCake(Long cakeId);
+
 }

@@ -2,6 +2,7 @@ package com.charapadev.cakenviewapi.modules.cakes.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,16 @@ public class CakeViewService {
     }
 
     /**
+     * Searches a CakeView instance using a given cake.
+     *
+     * @param cakeId The cake identifier.
+     * @return The views instance found.
+     */
+    public Optional<CakeView> findByCake(Long cakeId) {
+        return cakeViewRepository.findByCakeId(cakeId);
+    }
+
+    /**
      * Performs an increment of view on desired cake.
      *
      * @param cake The cake visited.
@@ -44,7 +55,7 @@ public class CakeViewService {
      */
     @Transactional
     public void incrementView(Cake cake) throws NoSuchElementException {
-        CakeView viewFound = cakeViewRepository.findByCakeId(cake.getId())
+        CakeView viewFound = findByCake(cake.getId())
             .orElseGet(() -> generate(cake));
 
         viewFound.incrementView();

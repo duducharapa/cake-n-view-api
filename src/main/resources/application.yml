@@ -2,11 +2,12 @@ jwt:
     secret: vdDq4hVKoodLKB6UtXnT6VuIvep3UyuxJS7qRj7jWCOpa2CunG7WyavMlg35zo8L
 spring:
     datasource:
-        url: jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
-        username: sa
-        password: password
-        driverClassName: org.h2.Driver
+        url: jdbc:postgresql://localhost:5432/cakenview
+        username: postgres
+        password: postgres
     jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
         hibernate:
-            ddl-auto: create-drop
+            ddl-auto: update
