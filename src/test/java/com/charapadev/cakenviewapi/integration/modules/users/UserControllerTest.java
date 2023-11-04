@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.charapadev.cakenviewapi.modules.ratings.RatingRepository;
 import com.charapadev.cakenviewapi.modules.users.UserRepository;
 import com.charapadev.cakenviewapi.modules.users.UserService;
 import com.charapadev.cakenviewapi.modules.users.dtos.CreateUserDTO;
@@ -20,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -35,6 +38,9 @@ public class UserControllerTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     private MockMvc mvc;
 
@@ -76,6 +82,17 @@ public class UserControllerTest {
         // Check if the user is not added on application
         // Because we added only one user, must have the same value yet
         assertEquals(1, userRepository.findAll().size());
+    }
+
+    @Test
+    public void listMyRatings() throws Exception {
+        // Currently quantity of ratings made
+        int currentRatings = ratingRepository.findAll().size();
+
+        // Perform GET /cakes/ratings endpoint
+        mvc.perform(get("/users/ratings"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content.length()").value(currentRatings));
+
     }
 
 }

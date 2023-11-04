@@ -81,4 +81,15 @@ public class RatingService {
         cakeService.update(cake, updatedRating);
     }
 
+    /**
+     * Searches the ratings made by an user.
+     *
+     * @param user The ratings creator.
+     * @param pageable The pagination object.
+     * @return A page containing some user ratings.
+     */
+    public Page<Rating> listByUser(User user, Pageable pageable) {
+        return ratingRepository.findAllByUser(user.getId(), pageable);
+    }
+
 }

@@ -25,7 +25,7 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
      *
      * @param cakeId The cake identifier.
      * @param pageable The pagination object.
-     * @return A page containing the rates
+     * @return A page containing some ratings found.
      */
     @Query("SELECT r FROM Rating r JOIN r.cake c WHERE c.id = :cakeId")
     Page<Rating> findAllByCake(Long cakeId, Pageable pageable);
@@ -38,5 +38,15 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
      */
     @Query("SELECT avg(r.number) FROM Rating r JOIN r.cake c WHERE c.id = :cakeId")
     BigDecimal getAverageRatingFromCake(Long cakeId);
+
+    /**
+     * Searches some ratings made by an specific user.
+     *
+     * @param userId The user identifier.
+     * @param pageable The pagination object.
+     * @return A page containing some rating found.
+     */
+    @Query("SELECT r FROM Rating r JOIN r.user u WHERE u.id = :userId")
+    Page<Rating> findAllByUser(Long userId, Pageable pageable);
 
 }

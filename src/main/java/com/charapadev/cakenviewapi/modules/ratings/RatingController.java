@@ -76,7 +76,7 @@ public class RatingController {
         );
         Page<Rating> ratings = ratingService.list(cake, pageable);
 
-        return ratings.map(ratingMapper::toShow);
+        return ratings.map(ratingMapper::toShowWithUser);
     }
 
     @Operation(summary = "Avaliar um bolo")

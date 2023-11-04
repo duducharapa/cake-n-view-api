@@ -2,15 +2,21 @@ package com.charapadev.cakenviewapi.modules.ratings.dtos;
 
 import java.sql.Timestamp;
 
+import com.charapadev.cakenviewapi.modules.cakes.dtos.ShowCakeDTO;
 import com.charapadev.cakenviewapi.modules.users.dtos.ShowUserDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 /**
  * Record containing the relevant data about any rating.
  */
 
-@Schema(description = "Dados públicos relacionados a avaliações feitas sobre algum bolo", requiredProperties = { "id", "number", "createdAt", "user" })
+
+@Builder
+@Schema(description = "Dados públicos relacionados a avaliações feitas sobre algum bolo", requiredProperties = { "id", "number", "createdAt" })
 public record ShowRatingDTO(
     /**
      * Rating identifier.
@@ -39,8 +45,16 @@ public record ShowRatingDTO(
     /**
      * The evaluator user.
      */
+    @JsonInclude(value = Include.NON_NULL)
     @Schema(description = "Usuário que realizou a avaliação")
-    ShowUserDTO user
+    ShowUserDTO user,
+
+    /**
+     * The rated cake.
+     */
+    @JsonInclude(value = Include.NON_NULL)
+    @Schema(description = "Bolo que fora avaliado")
+    ShowCakeDTO cake
 ) {
 
 }
